@@ -1,0 +1,31 @@
+<div class="profiles-container">
+  <h2>Registro de Usuarios</h2>
+  
+  <div class="user-container">
+    <div class="user-form-section">
+      <!-- Formulario para añadir usuarios -->
+      <app-user-form></app-user-form>
+    </div>
+    
+    <div class="users-list-section">
+      <h3>Usuarios Registrados</h3>
+      
+      <div *ngIf="users.length === 0" class="no-users">
+        Aún no hay usuarios registrados.
+      </div>
+      
+      <div class="users-grid">
+        <div class="user-card" *ngFor="let user of users">
+          <div class="user-info">
+            <h4>{{user.name}}</h4>
+            <p class="rut"><strong>RUT:</strong> {{user.rut}}</p>
+            
+            <div class="actions">
+              <button class="delete-btn" (click)="deleteUser(user.id!)">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

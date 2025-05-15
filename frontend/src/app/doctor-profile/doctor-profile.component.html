@@ -1,0 +1,31 @@
+<div class="profiles-container">
+  <h2>Nuestros Especialistas</h2>
+  
+  <div *ngIf="doctors.length === 0" class="no-profiles">
+    Aún no hay perfiles de especialistas registrados.
+  </div>
+  
+  <div class="profiles-grid">
+    <div class="doctor-card" *ngFor="let doctor of doctors">
+      <div class="doctor-image">
+        <img [src]="doctor.photoUrl" alt="Foto de {{doctor.name}}">
+      </div>
+      <div class="doctor-info">
+        <h3>{{doctor.name}}</h3>
+        <p class="rut"><strong>RUT:</strong> {{doctor.rut}}</p>
+        <p class="gender"><strong>Género:</strong> {{doctor.gender}}</p>
+        <p class="specialization">{{doctor.specialization}}</p>
+        <p><strong>Universidad:</strong> {{doctor.university}}</p>
+        <p><strong>Experiencia:</strong> {{doctor.experience}} años</p>
+        <p><strong>Contacto:</strong> {{doctor.contact}}</p>
+        <div class="bio-container">
+          <p class="bio">{{doctor.bio}}</p>
+        </div>
+        
+        <div class="actions">
+          <button class="delete-btn" (click)="deleteDoctor(doctor.id!)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

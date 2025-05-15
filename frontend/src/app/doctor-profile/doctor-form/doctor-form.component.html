@@ -1,0 +1,134 @@
+<div class="form-and-preview">
+  <div class="doctor-form-container">
+    <h2>Crear perfil de especialista</h2>
+    
+    <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()" class="doctor-form">
+      <div class="form-section">
+        <h3>Información Personal</h3>
+
+        <div class="form-group">
+          <label for="name">Nombre completo:</label>
+          <input type="text" id="name" formControlName="name" class="form-control" placeholder="Dr. Juan Pérez">
+          <div class="error-message" *ngIf="submitted && doctorForm.controls['name'].errors">
+            <span *ngIf="doctorForm.controls['name'].errors['required']">El nombre es obligatorio</span>
+            <span *ngIf="doctorForm.controls['name'].errors['minlength']">El nombre debe tener al menos 5 caracteres</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="rut">RUT:</label>
+          <input type="text" id="rut" formControlName="rut" class="form-control" placeholder="Ej: 12345678-9 (se formateará automáticamente)">
+          <div class="error-message" *ngIf="submitted && doctorForm.controls['rut'].errors">
+            <span *ngIf="doctorForm.controls['rut'].errors['required']">El RUT es obligatorio</span>
+            <span *ngIf="doctorForm.controls['rut'].errors['pattern']">Formato inválido (debe ser XX.XXX.XXX-X)</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="gender">Género:</label>
+          <select id="gender" formControlName="gender" class="form-control">
+            <option *ngFor="let option of genderOptions" [value]="option">{{ option }}</option>
+          </select>
+        </div>
+
+        <div class="form-group" *ngIf="customGender">
+          <label for="customGender">Especificar género:</label>
+          <input type="text" id="customGender" formControlName="customGender" class="form-control" placeholder="Ingrese su género">
+          <div class="error-message" *ngIf="submitted && doctorForm.controls['customGender']?.errors?.['required']">
+            Debe especificar el género
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="specialization">Especialidad:</label>
+          <input type="text" id="specialization" formControlName="specialization" class="form-control" placeholder="Cardiología">
+          <div class="error-message" *ngIf="submitted && doctorForm.controls['specialization'].errors?.['required']">
+            La especialidad es obligatoria
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="university">Universidad de egreso:</label>
+          <input type="text" id="university" formControlName="university" class="form-control" placeholder="Universidad de Chile">
+          <div class="error-message" *ngIf="submitted && doctorForm.controls['university'].errors?.['required']">
+            La universidad es obligatoria
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="experience">Años de experiencia:</label>
+          <input type="number" id="experience" formControlName="experience" class="form-control" placeholder="10">
+          <div class="error-message" *ngIf="submitted && doctorForm.controls['experience'].errors">
+            <span *ngIf="doctorForm.controls['experience'].errors['required']">La experiencia es obligatoria</span>
+            <span *ngIf="doctorForm.controls['experience'].errors['min']">La experiencia no puede ser negativa</span>
+            <span *ngIf="doctorForm.controls['experience'].errors['max']">La experiencia no puede exceder 60 años</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Contacto y Detalles</h3>
+        
+        <div class="form-group">
+          <label for="contactDigits">Contacto:</label>
+          <div class="input-prefix-container">
+            <span class="input-prefix">+56 9</span>
+            <input type="text" id="contactDigits" formControlName="contactDigits" class="form-control with-prefix" placeholder="8765 4321" maxlength="9">
+          </div>
+          <div class="error-message" *ngIf="submitted && (doctorForm.controls['contactDigits'].errors || doctorForm.controls['contact'].errors)">
+            <span *ngIf="doctorForm.controls['contactDigits'].errors?.['required']">El número de contacto es obligatorio</span>
+            <span *ngIf="doctorForm.controls['contactDigits'].errors?.['pattern']">Formato inválido, debe ingresar 8 dígitos</span>
+            <span *ngIf="doctorForm.controls['contact'].errors?.['pattern']">El número completo debe tener el formato +56 9 XXXX XXXX</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="photoUrl">URL de la foto (opcional):</label>
+          <input type="text" id="photoUrl" formControlName="photoUrl" class="form-control" placeholder="https://ejemplo.com/foto.jpg">
+          <p class="helper-text">Si se deja vacío, se usará una imagen predeterminada</p>
+        </div>
+
+        <div class="form-group">
+          <label for="bio">Biografía:</label>
+          <textarea id="bio" formControlName="bio" class="form-control" rows="4" placeholder="Describa su experiencia profesional y especialidades..."></textarea>
+          <div class="error-message" *ngIf="submitted && doctorForm.controls['bio'].errors">
+            <span *ngIf="doctorForm.controls['bio'].errors['required']">La biografía es obligatoria</span>
+            <span *ngIf="doctorForm.controls['bio'].errors['minlength']">La biografía debe tener al menos 20 caracteres</span>
+            <span *ngIf="doctorForm.controls['bio'].errors['maxlength']">La biografía no puede exceder 500 caracteres</span>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-button">Registrar Especialista</button>
+    </form>
+  </div>
+
+  <!-- Vista previa del perfil -->
+  <div class="doctor-preview-container">
+    <h2>Vista Previa</h2>
+    
+    <div class="doctor-card preview">
+      <div class="preview-image-container">
+        <div class="doctor-image">
+          <img [src]="previewPhotoUrl" alt="Vista previa">
+        </div>
+      </div>
+      <div class="doctor-info">
+        <h3>{{ doctorForm.get('name')?.value || 'Nombre del Doctor' }}</h3>
+        <p class="rut"><strong>RUT:</strong> {{ doctorForm.get('rut')?.value || '12.345.678-9' }}</p>
+        <p class="gender"><strong>Género:</strong> {{ 
+          (doctorForm.get('gender')?.value === 'Otro' ? doctorForm.get('customGender')?.value : doctorForm.get('gender')?.value) || 'No especificado' 
+        }}</p>
+        <p class="specialization">{{ doctorForm.get('specialization')?.value || 'Especialidad' }}</p>
+        <p><strong>Universidad:</strong> {{ doctorForm.get('university')?.value || 'Universidad de Egreso' }}</p>
+        <p><strong>Experiencia:</strong> {{ doctorForm.get('experience')?.value || '0' }} años</p>
+        <p><strong>Contacto:</strong> {{ doctorForm.get('contact')?.value || '+56 9 8765 4321' }}</p>
+        <div class="preview-bio-container">
+          <p class="bio">{{ doctorForm.get('bio')?.value || 'Biografía del doctor...' }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <p class="preview-note">Esta es una vista previa de cómo se verá el perfil del especialista.</p>
+  </div>
+</div>

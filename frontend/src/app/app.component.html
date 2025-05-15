@@ -1,0 +1,18 @@
+<header>
+  <div class="header-container">
+    <div class="logo">
+      <h1>SaludPlus</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a></li>
+        <li><a routerLink="/doctors" routerLinkActive="active">Especialistas</a></li>
+        <li><a routerLink="/users" routerLinkActive="active">Pacientes</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
